@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Private security concern
+    url: https://github.com/KSAGlory/Advertising-Reporting/blob/main/SECURITY.md
+    about: Read the private reporting guidance before sharing sensitive details.
+  - name: KSA community
+    url: https://discord.gg/ksahub
+    about: Community discussion and project questions.
