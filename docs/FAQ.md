@@ -4,7 +4,11 @@
 
 ## Is the automation finished?
 
-Yes, for the accepted personal Meta Ads and HubSpot reporting configuration recorded on 16 October 2026. Private Sheet export, the dashboard, production Google access, and weekly activation passed their recorded checks. The three deferred Google sources remain explicitly unconnected.
+The full originally planned integration is not finished. It is **partially complete and running**: Meta Ads and HubSpot work, daily and weekly exports and dashboard views passed checks, and Google production access and automatic renewal were verified. GA4, Google Ads, and Tag Manager still need real project assets, approved access, configuration, and live testing.
+
+## Why keep daily and weekly reports?
+
+Daily reporting at 09:00 Swiss time shows yesterday's results. Weekly reporting on Monday at 09:00 shows the previous seven complete days. They provide a quick daily review and a broader weekly view. Separate feeds prevent the daily update from replacing the weekly report.
 
 ## Can I install it from this repository?
 
@@ -28,11 +32,11 @@ The report counts contacts created in HubSpot. Qualification, customer status, s
 
 ## Why are scheduling and reporting in different timezones?
 
-Scheduling follows Swiss time for the owner's weekly routine. Measurement dates follow the verified Meta account timezone so daily totals align with that source. The current incomplete day is excluded.
+Scheduling follows Swiss time for the owner's daily and weekly routine. Measurement dates follow the verified Meta account timezone so daily totals align with that source. The current incomplete day is excluded. Recent figures may still be revised by providers after the scheduled report.
 
 ## Does it store history?
 
-The dashboard feed stores only the latest window. `Latest!A1:M6` is overwritten on each export. Long-term charts would require a separate history design.
+Each dashboard feed stores only its latest window. Daily reporting overwrites `Daily!A1:M6`; weekly reporting overwrites `Latest!A1:M6`. Long-term charts would require a separate history design.
 
 ## Does a successful run guarantee the dashboard is current?
 

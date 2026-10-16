@@ -8,31 +8,33 @@ The private implementation uses a self-hosted n8n workflow as the coordinator. P
 
 | Layer | Responsibility |
 | --- | --- |
-| Scheduler | Start the published workflow on Monday at 09:00 Europe/Zurich. |
-| Report context | Establish the owner profile, generation timestamp, date range, and report timezone. |
+| Schedulers | Start daily and Monday-only executions at 09:00 Europe/Zurich. |
+| Report context | Establish the owner profile, daily/weekly mode, generation timestamp, date range, and report timezone. |
 | Configuration checks | Require enabled sources, approved credentials, account identifiers, and valid configuration before collection. |
 | Provider adapters | Issue bounded read requests and preserve source-specific meaning. |
 | Validation | Check response shape, numeric metrics, currencies, timezones, and known incompleteness signals. |
 | Report assembly | Produce source statuses, notes, deterministic totals, ratios, and the flat dashboard table. |
-| Sheet export | Overwrite the existing Latest range and inspect the update response. |
+| Sheet export | Overwrite Daily for daily mode or Latest for weekly mode, and verify the returned range and dimensions. |
 | Dashboard | Read the private Sheet and display available measurements and source context. |
 
 ## Execution sequence
 
-1. The clock trigger starts the published workflow.
-2. Reporting logic calculates seven complete calendar days, excluding the current day.
+1. A daily or weekly clock trigger starts a separate execution of the same published workflow.
+2. Reporting logic selects yesterday for daily mode or seven complete days for weekly mode, excluding the current day.
 3. Each source passes through a setup check. Disabled or unconfigured sources produce an explicit status without a provider request.
 4. Enabled Meta and HubSpot adapters request the permitted measurements.
 5. Responses are normalised and validated. Failures remain attached to their source instead of becoming fabricated metrics.
 6. The report is assembled. The accepted path bypasses the optional AI summary because AI is off.
-7. Google Sheets receives a header and five source rows in `Latest!A1:M6`.
-8. The workflow records export status and its final report. Data Studio reads the Sheet independently through its own connector.
+7. Google Sheets receives a header and five source rows in `Daily!A1:M6` or `Latest!A1:M6`, according to the execution's mode.
+8. The workflow checks that the update response names the expected range, six rows, and 13 columns. Data Studio reads the feeds independently through native Sheets connections on separate pages.
 
 This sequence describes logical responsibilities; it is not a public workflow definition or a deployment recipe.
 
+The existing manual entry remains weekly, and a separate daily manual entry supports maintenance checks. Each execution creates its own profile context; changing the daily period does not mutate the weekly period. Only the two fixed feed ranges are accepted for export. On Monday, both schedules can run at the same clock time without writing over one another's report.
+
 ## Two timezone responsibilities
 
-The trigger uses Europe/Zurich so the owner can expect a consistent Swiss wall-clock time. Source reporting uses the verified Meta account timezone recorded as EET, so date boundaries align with that account's daily results.
+Both triggers use Europe/Zurich so the owner can expect a consistent Swiss wall-clock time. Source reporting uses the verified Meta account timezone recorded as EET, so date boundaries align with that account's daily results.
 
 The period has an inclusive start date and end date for presentation. Timestamp filtering uses the start boundary through the next midnight after the last included day, with an exclusive upper bound. It is a calendar-day window, rather than an assumption that every day is exactly 24 hours long.
 
@@ -48,7 +50,7 @@ No provider credentials, live account identifiers, private destination URLs, int
 
 There are distinct checks for provider collection, Sheet export, and dashboard display. A successful provider response does not by itself establish a successful export. A saved dashboard URL produces the workflow status `configured_link_only`; it is not evidence of dashboard availability.
 
-The export checks the Sheets API update response. Earlier acceptance also read back cells and reviewed formulas and the dashboard. Those stronger acceptance checks are not claimed to run continuously on every schedule.
+Each export checks the Sheets API update response, including the target range and table dimensions. Maintenance acceptance also read back both feeds and reviewed formulas and both dashboard pages. Those stronger acceptance checks are not claimed to run continuously on every schedule.
 
 ## Extending the system
 

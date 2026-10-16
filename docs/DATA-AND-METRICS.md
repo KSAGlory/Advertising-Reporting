@@ -6,9 +6,9 @@ The report keeps each source's status and measurements together. A missing measu
 
 ## Reporting window
 
-The accepted report covers the previous seven complete days in the verified Meta account timezone, recorded as EET. The current day is excluded. The weekly Monday trigger uses Europe/Zurich independently.
+The daily report covers yesterday; the weekly report covers the previous seven complete days. Both periods use the verified Meta account timezone, recorded as EET, and exclude the current day. The daily and Monday-only triggers use Europe/Zurich independently, both at 09:00 Swiss time.
 
-For example, a Monday run normally reports the preceding Monday through Sunday in the report timezone. The row's period dates describe measurement coverage; `generated_at` describes when the report was created. Neither should be replaced by the dashboard's cache-refresh time.
+For example, Monday's daily report covers Sunday, while Monday's weekly report covers the preceding Monday through Sunday in the report timezone. The row's period dates describe measurement coverage; `generated_at` describes when the report was created. Neither should be replaced by the dashboard's cache-refresh time.
 
 ## Source statuses
 
@@ -62,7 +62,7 @@ In the accepted Meta/HubSpot configuration, combined advertising spend is unavai
 
 ## Dashboard feed
 
-The Sheet range `Latest!A1:M6` contains one header row followed by five rows: GA4, Google Ads, Meta Ads, HubSpot, and Tag Manager. Unconnected sources keep their row and visible status.
+Each Sheet feed contains one header row followed by five rows: GA4, Google Ads, Meta Ads, HubSpot, and Tag Manager. `Daily!A1:M6` holds yesterday's results; `Latest!A1:M6` holds the weekly results. Both use the same fields below. Unconnected sources keep their row and visible status.
 
 | Column | Field | Meaning |
 | --- | --- | --- |
@@ -84,6 +84,6 @@ Unavailable exported measurements are blank. Verified no-activity measurements c
 
 ## Storage limits
 
-Exports overwrite the same range. Re-running avoids appended duplicate rows but replaces the previous window. Latest is not a historical archive, and the dashboard cannot recover a long-term trend from it alone.
+Each export overwrites only its mode's fixed range. Re-running avoids appended duplicate rows but replaces that feed's previous window. Daily updates leave Latest unchanged. Neither feed is a historical archive, and the dashboard cannot recover a long-term trend from these tables alone.
 
 Advertising pagination is detected and labelled; subsequent pages are not fetched yet. GA4 thresholding, sampling, or data-loss indicators are handled as partial in local validation tests, but no GA4 account is currently connected. A future high-volume source needs a separate completeness review.

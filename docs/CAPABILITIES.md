@@ -24,14 +24,16 @@ The owner-only spreadsheet contains:
 
 | Tab | Purpose |
 | --- | --- |
-| Overview | A readable summary with formulas and context for reviewing the current report. |
-| Latest | The dashboard data feed: a header and five source rows in `A1:M6`. |
+| Weekly Overview | A readable summary of the weekly feed, with existing formulas and formatting preserved. |
+| Daily Overview | A matching readable summary that references the Daily feed. |
+| Latest | The weekly dashboard feed: a header and five source rows in `A1:M6`. |
+| Daily | The daily dashboard feed with the same 13-column structure. |
 
-The weekly workflow updates the existing Latest range. Repeated exports do not append duplicate rows. This also means Latest is replaced each time; no historical reporting archive is maintained in this table.
+The same workflow has daily and weekly entry points. Daily executions update Daily; weekly executions update Latest. The feeds do not overwrite one another. Repeated exports replace that feed's current window rather than appending duplicate rows; neither table stores historical time series.
 
 ## Google Data Studio dashboard
 
-The private dashboard reads the Latest range through its own authorised native Google Sheets connector. It includes a source table, reporting dates, available totals, explanatory notes, and a HubSpot-only contact scorecard. Missing metrics stay blank, and the table avoids a combined summary row that would mix unlike sources.
+The private dashboard has Daily and Weekly pages, each reading its own feed through the authorised native Google Sheets connector. Each page includes a source table, reporting dates, available totals, explanatory notes, and a HubSpot-only contact scorecard. Missing metrics stay blank, and the tables avoid a combined summary row that would mix unlike sources.
 
 Owner-only sharing and the saved dashboard were checked in the browser, including after a reload. The n8n export does not continuously verify the dashboard or manage its connector. Data Studio caching can delay visible changes.
 

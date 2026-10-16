@@ -33,7 +33,7 @@ Google OAuth is in production. Reconnection with the existing `drive.file` scope
 
 ## Scheduling and owner control
 
-The native n8n Publish/Unpublish control enables or disables automatic reporting. The accepted schedule is Monday at 09:00 Europe/Zurich. It runs on the existing server and does not require the owner's computer, Codex, or browser tabs to remain open.
+The native n8n Publish/Unpublish control enables or disables automatic reporting. Daily reporting runs every day at 09:00 Europe/Zurich; weekly reporting remains Monday at 09:00. Both belong to the same workflow, so Unpublish stops both schedules. They run on the existing server and do not require the owner's computer, Codex, or browser tabs to remain open.
 
 The server, scheduler, network, provider credentials, and relevant APIs still need to be available. No service-level availability or automatic incident-recovery guarantee is claimed.
 
@@ -43,7 +43,7 @@ Warnings and source failures are visible in the report. No email or messaging no
 
 The private maintenance process is to inspect current state, back up the owned workflow, make a narrow authorised change, verify actual executions and destination results, then update the local handoff evidence. Unrelated workflows, credentials, and infrastructure are outside scope.
 
-Private recovery material includes workflow snapshots and a recovery bundle. A separate portable workflow copy is deliberately inactive and credential-free; it is not a replacement to import over the live working workflow. None of those files is distributed here.
+Private recovery material includes workflow snapshots, the daily/weekly maintenance patch and evidence, and an earlier recovery bundle. A separate portable workflow copy is deliberately inactive and credential-free; its earlier weekly-only builder is not the latest live definition or a replacement to import over the working workflow. The final daily/weekly native snapshot is preserved privately. None of those files is distributed here.
 
 Preserved files support recovery planning. This reporting showcase does not claim a separately completed full disaster-recovery restore drill.
 

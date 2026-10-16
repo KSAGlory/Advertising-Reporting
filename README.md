@@ -1,24 +1,25 @@
 <h1 align="center">Advertising &amp; Reporting</h1>
 
-<p align="center">A private weekly reporting toolkit for advertising results and new-contact counts.</p>
+<p align="center">A private daily and weekly reporting toolkit for advertising results and new-contact counts.</p>
 <p align="center"><strong>Verified metrics. Visible connection status. One private report.</strong></p>
 
-Advertising & Reporting brings Meta advertising results and HubSpot new-contact counts into a private Google Sheet and Google Data Studio dashboard. A scheduled n8n workflow collects the last seven complete days, checks the responses, and updates the same report table each week.
+Advertising & Reporting brings Meta advertising results and HubSpot new-contact counts into a private Google Sheet and Google Data Studio dashboard. One n8n workflow runs daily for yesterday's results and weekly for the previous seven complete days, validates the responses, and updates separate report tables.
 
 The purpose is to make a personal marketing review easier: see what happened, understand which sources are connected, and distinguish measured inactivity from missing information.
 
-> **Status — 16 October 2026:** Complete and active for the accepted personal configuration: Meta Ads, HubSpot, private Google Sheets export, and a private Data Studio dashboard. Weekly scheduling and a clock-triggered execution passed verification. GA4, Google Ads, and Google Tag Manager await real owner assets and approved access. AI is disabled. This repository is a **public showcase of a private implementation**; source code, workflow exports, account data, and recovery material remain private.
+> **Status — 16 October 2026: Partially complete and running.** Meta Ads and HubSpot reporting work, with private Google Sheets exports and separate Daily and Weekly dashboard pages. Both schedules passed manual and clock-triggered tests. **The originally planned full integration is unfinished:** GA4, Google Ads, and Google Tag Manager still require real project assets, approved access, configuration, and live verification. AI is disabled. This repository is a **public showcase of a private implementation**; source code, workflow exports, account data, and recovery material remain private.
 
 ## What it does
 
 | Capability | What it gives the owner |
 | --- | --- |
-| **Weekly reporting** | A scheduled refresh every Monday at 09:00 Europe/Zurich. |
+| **Daily reporting** | Every day at 09:00 Europe/Zurich, covering yesterday in the report timezone. |
+| **Weekly reporting** | Every Monday at 09:00 Europe/Zurich, covering the previous seven complete days. |
 | **Meta Ads results** | Available campaign spend, impressions, inline link clicks, and calculated ratios. |
 | **HubSpot contact counts** | Contacts created during the reporting window, clearly labelled as contacts. |
 | **Connection status** | A visible distinction between connected, unconfigured, inactive, partial, and failed sources. |
-| **Private Google Sheet** | A readable Overview tab and a stable Latest data table for the dashboard. |
-| **Private dashboard** | A source table and a HubSpot contact scorecard, restricted to the owner. |
+| **Private Google Sheet** | Separate Daily and Weekly overviews, with independent Daily and Latest data feeds. |
+| **Private dashboard** | Daily and Weekly pages with source tables and HubSpot contact scorecards, restricted to the owner. |
 | **Deterministic calculations** | Metric validation and arithmetic performed by reporting logic, with AI off. |
 | **Access-expiry handling** | A report warning near Meta expiry and blocked collection after expiry. |
 
@@ -28,7 +29,8 @@ Provider collection is read-only. The workflow writes its report to Google Sheet
 
 ```mermaid
 flowchart LR
-    Schedule[Monday 09:00 Swiss time] --> Workflow[n8n reporting workflow]
+    DailySchedule[Every day 09:00 Swiss time] --> Workflow[n8n reporting workflow]
+    WeeklySchedule[Monday 09:00 Swiss time] --> Workflow
     Workflow --> Checks[Check source configuration]
     Checks --> Meta[Read Meta advertising results]
     Checks --> HubSpot[Read HubSpot new-contact count]
@@ -37,14 +39,14 @@ flowchart LR
     HubSpot --> Validate
     Pending -.-> Validate
     Validate --> Report[Build report and source table]
-    Report --> Sheet[Private Google Sheet]
-    Sheet --> Dashboard[Private Data Studio dashboard]
+    Report --> Sheet[Private Sheet: separate Daily and Latest feeds]
+    Sheet --> Dashboard[Private dashboard: Daily and Weekly pages]
     Dashboard --> Owner[Owner reviews results]
 ```
 
 Solid paths describe the accepted reporting configuration. Dotted paths describe deferred integrations and their visible setup status, with no provider collection enabled for them.
 
-The reporting period follows the verified Meta account timezone, recorded as **EET**. The weekly trigger follows **Europe/Zurich** separately. The report excludes the current, incomplete day. Read the [architecture](docs/ARCHITECTURE.md) and [data and metrics guide](docs/DATA-AND-METRICS.md) for the details.
+Reporting periods follow the verified Meta account timezone, recorded as **EET**. Both clock triggers follow **Europe/Zurich** separately. Both reports exclude the current, incomplete day. Daily and weekly executions write different ranges, including when both run on Monday morning. Read the [architecture](docs/ARCHITECTURE.md) and [data and metrics guide](docs/DATA-AND-METRICS.md) for the details.
 
 ## Connected now, deferred for later
 
@@ -52,8 +54,8 @@ The reporting period follows the verified Meta account timezone, recorded as **E
 | --- | --- |
 | Meta Ads | Connected and tested for reporting. Conversion action intentionally unset until a real goal is chosen. |
 | HubSpot | Connected and tested with contact-read access. New contacts are not assumed to be leads or customers. |
-| Google Sheets | Private owner-only report; repeat exports overwrite the same Latest range. |
-| Google Data Studio | Separately authorised Sheets connector; dashboard and access checked in the browser. |
+| Google Sheets | Private owner-only report; Daily and Latest are overwritten independently. |
+| Google Data Studio | Native Sheets connections for each feed; both dashboard pages and private access checked in the browser. |
 | Google Analytics 4 | Deferred: no real website/app property is available yet. |
 | Google Ads | Deferred: no real Google Ads customer ID is available yet. |
 | Google Tag Manager | Deferred: no real website container is available yet. |
@@ -70,13 +72,13 @@ The reporting period follows the verified Meta account timezone, recorded as **E
 
 ## What has been verified
 
-The private handoff records **25 passing local tests**, successful live Meta and HubSpot reads, repeated Google Sheets exports with cell readback, and a browser review of the saved dashboard. Google OAuth production reconnection and one automatic token renewal passed. A native clock-triggered n8n execution reached the final report and updated the Sheet; its temporary test schedule was removed before the final Monday schedule was published.
+The latest maintenance passed **25 existing reporting checks and 9 new daily/weekly checks**. Manual and native clock-triggered executions passed for both periods and updated their respective Sheet ranges. Readback matched all 156 cells across the two feeds to the native execution results. Existing weekly overview formulas and formatting were preserved, and both dashboard pages were reviewed in viewing mode. Google production access remains in use, and automatic token renewal was observed again during testing. Temporary test schedules were removed before publishing the final daily and Monday schedules.
 
-Preservation checks recorded that unrelated workflow definitions and credential metadata remained unchanged. These are dated acceptance results, not continuous service monitoring. No new provider execution was performed to publish this showcase. See [verification](docs/VERIFICATION.md) for the evidence scope and limits.
+Preservation checks recorded that unrelated workflow definitions, all credential identities, and unrelated credential metadata remained unchanged. The report writer's credential timestamp changed during its automatic renewal. These are dated acceptance results, not continuous service monitoring. See [verification](docs/VERIFICATION.md) for the evidence scope and limits.
 
 ## Practical boundaries
 
-The Latest worksheet stores **one reporting window**, with one header and five source rows. Each export overwrites `Latest!A1:M6`; historical time series are not stored there. Data Studio can cache results, so its displayed refresh time may differ from the automation's execution time.
+Each feed stores **one reporting window**, with one header and five source rows. Daily exports overwrite `Daily!A1:M6`; weekly exports overwrite `Latest!A1:M6`. Daily runs preserve the weekly feed. Historical time series are not stored in either table. Data Studio can cache results, so its displayed refresh time may differ from the automation's execution time.
 
 Meta access requires renewal. Warnings appear in the report within seven days of its recorded expiry; expired access blocks collection. There is no configured email or messaging alert. The self-hosted server and provider access must remain available for scheduled reporting to work.
 

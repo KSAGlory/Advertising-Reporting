@@ -2,13 +2,13 @@
 
 [Back to the project](../README.md)
 
-The accepted Meta/HubSpot configuration is complete and scheduled. The work below describes conditions for later additions, not an announced release schedule or enabled functionality.
+The automation is partially complete and running: Meta/HubSpot reporting works with daily and weekly schedules, while the originally planned GA4, Google Ads, and Tag Manager integrations remain unfinished. The work below describes conditions for completing them, not an announced release schedule or enabled functionality.
 
 ## Maintain the accepted configuration
 
 | Area | Maintenance objective |
 | --- | --- |
-| Weekly operation | Review real execution and export results when maintenance is requested. |
+| Daily and weekly operation | Review real execution and export results for both periods when maintenance is requested. |
 | Meta access | Renew before the privately recorded expiry and verify a successful read afterward. |
 | Google access | Investigate renewal or connector failures if they occur; retain approved scope. |
 | Reporting evidence | Keep the private handoff current after authorised changes. |
@@ -23,6 +23,8 @@ The accepted Meta/HubSpot configuration is complete and scheduled. The work belo
 | Google Tag Manager | A real container for the owner's website and approved read access. | Verify the expected container; test website installation and event delivery separately if those claims are needed. |
 
 No placeholder assets should be created to make an unconnected integration appear complete. Access and setup changes require the owner's real assets and approval.
+
+After connecting these sources, verify real responses or legitimate inactivity, date and currency interpretation, source failures, both report feeds, both dashboard pages, and the published schedules. An empty GA4 property, browser login to Google Ads, or accessible Tag Manager container alone does not finish the integration. Website installation, tag publication, and end-to-end tracking checks must be handled explicitly when real assets exist. Connections should remain configurable for real personal or client projects rather than an assumed website or niche.
 
 ## Possible future improvements
 
