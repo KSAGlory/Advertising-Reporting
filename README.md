@@ -109,7 +109,7 @@ Project questions and documentation corrections are welcome through [GitHub Issu
 
 ## License
 
-The implementation remains private and proprietary. No application, source-code, or workflow license is offered through this repository. See [COPYRIGHT.md](COPYRIGHT.md) for the showcase materials.
+The implementation remains private and proprietary. No application, source-code, or workflow license is offered through this repository.
 
 Referenced platforms, products, and third-party projects retain their respective rights and terms. This is an independent project and does not imply their endorsement.
 
