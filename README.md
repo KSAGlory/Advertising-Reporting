@@ -70,12 +70,6 @@ Reporting periods follow the verified Meta account timezone, recorded as **EET**
 - **Incomplete data stays visible.** Detected advertising pagination is labelled partial; later pages are not collected yet.
 - **Attribution stays separate.** Platform conversions, website key events, and CRM outcomes are not added together as equivalent results.
 
-## What has been verified
-
-The latest maintenance passed **25 existing reporting checks and 9 new daily/weekly checks**. Manual and native clock-triggered executions passed for both periods and updated their respective Sheet ranges. Readback matched all 156 cells across the two feeds to the native execution results. Existing weekly overview formulas and formatting were preserved, and both dashboard pages were reviewed in viewing mode. Google production access remains in use, and automatic token renewal was observed again during testing. Temporary test schedules were removed before publishing the final daily and Monday schedules.
-
-Preservation checks recorded that unrelated workflow definitions, all credential identities, and unrelated credential metadata remained unchanged. The report writer's credential timestamp changed during its automatic renewal. These are dated acceptance results, not continuous service monitoring. See [verification](docs/VERIFICATION.md) for the evidence scope and limits.
-
 ## Practical boundaries
 
 Each feed stores **one reporting window**, with one header and five source rows. Daily exports overwrite `Daily!A1:M6`; weekly exports overwrite `Latest!A1:M6`. Daily runs preserve the weekly feed. Historical time series are not stored in either table. Data Studio can cache results, so its displayed refresh time may differ from the automation's execution time.
