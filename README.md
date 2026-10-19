@@ -61,15 +61,6 @@ Reporting periods follow the verified Meta account timezone, recorded as **EET**
 | Google Tag Manager | Deferred: no real website container is available yet. |
 | AI summary | Disabled; no AI summary is part of the accepted reporting path. |
 
-## Reporting principles
-
-- **Zero needs evidence.** A successful empty advertising response can establish inactivity; an unavailable connection cannot.
-- **Missing metrics stay blank.** Unconfigured conversions and unsupported metrics are not manufactured.
-- **Contacts keep their meaning.** Contact creation is separate from lead qualification, sales, and revenue.
-- **Ratios use totals.** CTR, CPC, and CPA are calculated from validated summed metrics, rather than averages of campaign percentages.
-- **Incomplete data stays visible.** Detected advertising pagination is labelled partial; later pages are not collected yet.
-- **Attribution stays separate.** Platform conversions, website key events, and CRM outcomes are not added together as equivalent results.
-
 ## Practical boundaries
 
 Each feed stores **one reporting window**, with one header and five source rows. Daily exports overwrite `Daily!A1:M6`; weekly exports overwrite `Latest!A1:M6`. Daily runs preserve the weekly feed. Historical time series are not stored in either table. Data Studio can cache results, so its displayed refresh time may differ from the automation's execution time.
