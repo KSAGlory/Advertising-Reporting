@@ -48,19 +48,6 @@ Solid paths describe the accepted reporting configuration. Dotted paths describe
 
 Reporting periods follow the verified Meta account timezone, recorded as **EET**. Both clock triggers follow **Europe/Zurich** separately. Both reports exclude the current, incomplete day. Daily and weekly executions write different ranges, including when both run on Monday morning. Read the [architecture](docs/ARCHITECTURE.md) and [data and metrics guide](docs/DATA-AND-METRICS.md) for the details.
 
-## Connected now, deferred for later
-
-| Source or destination | Verified configuration |
-| --- | --- |
-| Meta Ads | Connected and tested for reporting. Conversion action intentionally unset until a real goal is chosen. |
-| HubSpot | Connected and tested with contact-read access. New contacts are not assumed to be leads or customers. |
-| Google Sheets | Private owner-only report; Daily and Latest are overwritten independently. |
-| Google Data Studio | Native Sheets connections for each feed; both dashboard pages and private access checked in the browser. |
-| Google Analytics 4 | Deferred: no real website/app property is available yet. |
-| Google Ads | Deferred: no real Google Ads customer ID is available yet. |
-| Google Tag Manager | Deferred: no real website container is available yet. |
-| AI summary | Disabled; no AI summary is part of the accepted reporting path. |
-
 ## Practical boundaries
 
 Each feed stores **one reporting window**, with one header and five source rows. Daily exports overwrite `Daily!A1:M6`; weekly exports overwrite `Latest!A1:M6`. Daily runs preserve the weekly feed. Historical time series are not stored in either table. Data Studio can cache results, so its displayed refresh time may differ from the automation's execution time.
